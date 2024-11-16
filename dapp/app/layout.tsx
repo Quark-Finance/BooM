@@ -67,7 +67,7 @@ export default function RootLayout({
                   className="absolute inset-0"
                   quantity={75}
                   ease={95}
-                  size={1.8}
+                  size={6}
                   refresh
                 />
                 <Header />

@@ -10,13 +10,14 @@ import { Button } from '@/components/ui/button';
 import { ThemeColorToggle } from '@/components/themeToggle/ThemeColorToggle';
 import { ThemeModeToggle } from '@/components/themeToggle/ThemeModeToggle';
 import { navItems } from '@/lib/navItems';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 type HeaderProps = {
   logo?: string;
   actions?: React.ReactNode;
 };
 
-export const Header = React.memo(function Header({ logo, actions }: HeaderProps) {
+export const Header = React.memo(function Header({ actions }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -30,11 +31,11 @@ export const Header = React.memo(function Header({ logo, actions }: HeaderProps)
     <header className="sticky top-0 z-40 px-4 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          {logo && <Image src={logo} alt="Logo" width={32} height={32} />}
-          <span className="hidden font-bold sm:inline-block">MyApp</span>
+          <Image src='/logo.svg' alt="Logo" width={32} height={32} className="dark:invert dark:drop-shadow-[0_0_0.3rem_#ffffff70]" />
+          <span className="hidden font-bold text-3xl sm:inline-block dark:drop-shadow-[0_0_0.6rem_#ffffff70]">Boo Market</span>
         </Link>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          {/* <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -47,11 +48,63 @@ export const Header = React.memo(function Header({ logo, actions }: HeaderProps)
                 {item.label}
               </Link>
             ))}
-          </nav>
+          </nav> */}
           <div className="flex items-center space-x-2">
             {actions}
             <ThemeColorToggle />
             <ThemeModeToggle />
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                const ready = mounted && authenticationStatus !== 'loading';
+                const connected =
+                  ready && account && chain && (!authenticationStatus || authenticationStatus === 'authenticated');
+
+                return (
+                  <div
+                    {...(!ready && {
+                      'aria-hidden': true,
+                      style: {
+                        opacity: 0,
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                      },
+                    })}
+                  >
+                    {connected ? (
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={openChainModal}
+                          className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm"
+                        >
+                          {chain.name}
+                        </button>
+                        <button
+                          onClick={openAccountModal}
+                          className="bg-muted px-3 py-1 rounded-md text-sm"
+                        >
+                          {`${account.displayName.substring(0, 6)}...${account.displayName.slice(-4)}`}
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={openConnectModal}
+                        className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm hover:bg-primary/90"
+                      >
+                        Connect Wallet
+                      </button>
+                    )}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
           </div>
           <Button variant="ghost" className="md:hidden" size="sm" onClick={toggleMenu}>
             <Menu className="h-5 w-5" />
