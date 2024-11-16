@@ -35,12 +35,11 @@ const tokens: Token[] = [
     image: '/icons/usdc.png',
   },
   {
-    symbol: 'PEPE',
-    address: '0x6982508145454ce325ddbe47a25d4ec3d2311933', // Mainnet pepe address
-    decimals: 18,
-    image: '/icons/pepe.png',
+    symbol: "PEPE",
+    address: "0x0",
+    decimals: 6,
+    image: '/icons/pepe.svg',
   }
-  // Add more tokens as needed
 ];
 
 export default function SwapComponent() {
@@ -51,11 +50,11 @@ export default function SwapComponent() {
   const [sellAmount, setSellAmount] = useState('');
   const [buyAmount, setBuyAmount] = useState('');
   const [sellToken, setSellToken] = useState(tokens[0]);
-  const [buyToken, setBuyToken] = useState<Token | null>(null);
+  const [buyToken, setBuyToken] = useState<Token>(tokens[1]);
   const [sellTokenBalance, setSellTokenBalance] = useState('0');
+  const [exchangeRate, setExchangeRate] = useState(0); 
   const [isValidSwap, setIsValidSwap] = useState(false);
 
-  // Fetch balance of the selected sell token
   const { data: balanceData } = useBalance({
     address,
     token:
@@ -72,20 +71,40 @@ export default function SwapComponent() {
     }
   }, [balanceData]);
 
-  // Mock exchange rate for demonstration purposes
-  const exchangeRate = 2000; // Example: 1 ETH = 2000 USDC
+  // Fetch live exchange rates
+  useEffect(() => {
+    const fetchExchangeRate = async () => {
+      if (!sellToken || !buyToken) return;
+
+      try {
+        const response = await fetch(
+          `https://min-api.cryptocompare.com/data/price?fsym=${sellToken.symbol}&tsyms=${buyToken.symbol}`
+        );
+        const data = await response.json();
+
+        if (data[buyToken.symbol]) {
+          setExchangeRate(data[buyToken.symbol]);
+        }
+      } catch (error) {
+        console.error('Error fetching exchange rate:', error);
+        setExchangeRate(0);
+      }
+    };
+
+    fetchExchangeRate();
+  }, [sellToken, buyToken]);
 
   // Update buy amount based on sell amount and exchange rate
   useEffect(() => {
-    if (sellAmount && buyToken) {
-      const amount = (
-        parseFloat(sellAmount) * exchangeRate
-      ).toFixed(buyToken.decimals);
+    if (sellAmount && exchangeRate) {
+      const amount = (parseFloat(sellAmount) * exchangeRate).toFixed(
+        buyToken.decimals
+      );
       setBuyAmount(amount);
     } else {
       setBuyAmount('');
     }
-  }, [sellAmount, buyToken]);
+  }, [sellAmount, exchangeRate, buyToken.decimals]);
 
   // Validate the swap
   useEffect(() => {
@@ -109,7 +128,7 @@ export default function SwapComponent() {
     }
   }, [sellAmount, sellTokenBalance, sellToken.decimals, buyToken]);
 
-  // Swap tokens (sell and buy tokens)
+  // Swap tokens (swap sell and buy tokens)
   const handleTokenSwap = () => {
     setSellToken(buyToken || tokens[0]);
     setBuyToken(sellToken);
@@ -190,24 +209,20 @@ export default function SwapComponent() {
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-6">
-      <Card className="w-full max-w-[464px] p-6 bg-background/90 rounded-lg shadow-lg backdrop-blur-md">
-        <div className="space-y-6">
+      <div className="">
+      <Card className="w-full max-w-[464px] p-6 bg-muted/80 rounded-lg">
           {/* Sell Section */}
-          <div className="space-y-2">
+          <div className="space-y-1">
             <div className="flex justify-between">
-              <span className="text-sm font-medium">You Sell</span>
-              <span className="text-sm text-muted-foreground">
-                Balance: {parseFloat(sellTokenBalance).toFixed(4)}{' '}
-                {sellToken.symbol}
-              </span>
+              <span className="text-md font-bold">Sell</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
-                placeholder="0.0"
+                placeholder="0"
                 value={sellAmount}
                 onChange={(e) => setSellAmount(e.target.value)}
-                className="flex-1 text-2xl h-14 bg-muted/50 rounded-md border focus:ring focus:ring-primary"
+                className="flex-1 text-3xl font-semibold h-14 rounded-md bg-muted/80"
               />
               <Select
                 value={sellToken.symbol}
@@ -218,7 +233,8 @@ export default function SwapComponent() {
                   if (selectedToken) setSellToken(selectedToken);
                 }}
               >
-                <SelectTrigger className="w-[150px] h-14 bg-muted/50 rounded-md border focus:ring focus:ring-primary">
+                <div className='flex flex-col items-left text-left'>
+                <SelectTrigger className="w-[150px] h-14 rounded-full border focus:ring focus:ring-primary">
                   <SelectValue>
                     <div className="flex items-center gap-2">
                       <Image
@@ -232,10 +248,15 @@ export default function SwapComponent() {
                     </div>
                   </SelectValue>
                 </SelectTrigger>
+              <span className="text-sm ml-2 mt-1 text-muted-foreground">
+                {parseFloat(sellTokenBalance).toFixed(4)}{' '}
+                {sellToken.symbol}
+              </span>
+              </div>
                 <SelectContent>
                   {tokens.map((token) => (
                     <SelectItem key={token.symbol} value={token.symbol}>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         <Image
                           src={token.image}
                           alt={token.symbol}
@@ -251,33 +272,41 @@ export default function SwapComponent() {
               </Select>
             </div>
           </div>
-
+          </Card>
           {/* Swap Button */}
-          <div className="flex justify-center py-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-10 w-10 rounded-full bg-muted hover:bg-muted/80"
-              onClick={handleTokenSwap}
-            >
-              <ArrowDownUp className="h-5 w-5" />
-            </Button>
-          </div>
-
+          <div className="relative w-full flex items-center justify-center my-1">
+    <div className="absolute z-50 flex items-center justify-center">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-12 w-12 rounded-md bg-muted/80 border border-background border-[2px] hover:bg-muted/80"
+        onClick={handleTokenSwap}
+      >
+        <ArrowDownUp className="h-5 w-5" />
+      </Button>
+    </div>
+  </div>
           {/* Buy Section */}
+          <Card className="w-full max-w-[464px] mt-2 p-6 border border-muted/80 rounded-lg shadow-lg">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-sm font-medium">You Buy</span>
+              <span className="text-md font-bold">Buy</span>
             </div>
             <div className="flex items-center gap-2">
+              <div className='flex flex-col text-left items-left'>
               <Input
                 type="number"
-                placeholder="0.0"
+                placeholder="0"
                 value={buyAmount}
                 onChange={(e) => setBuyAmount(e.target.value)}
-                className="flex-1 text-2xl h-14 bg-muted/50 rounded-md border focus:ring focus:ring-primary"
+                className="flex-1 text-3xl font-semibold h-14 rounded-md"
                 disabled
               />
+              <span className="text-sm ml-2 mt-1 text-muted-foreground">
+                {parseFloat(buyAmount === '' ? '0' : buyAmount).toFixed(2) || 0}{' '}
+                {buyToken?.symbol}
+              </span>
+              </div>
               <Select
                 value={buyToken?.symbol || ''}
                 onValueChange={(value) => {
@@ -287,10 +316,10 @@ export default function SwapComponent() {
                   if (selectedToken) setBuyToken(selectedToken);
                 }}
               >
-                <SelectTrigger className="w-[150px] h-14 bg-muted/50 rounded-md border focus:ring focus:ring-primary">
+                <SelectTrigger className="w-[150px] h-14 rounded-full border focus:ring focus:ring-primary">
                   <SelectValue placeholder="Select token">
                     {buyToken ? (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         <Image
                           src={buyToken.image}
                           alt={buyToken.symbol}
@@ -333,17 +362,17 @@ export default function SwapComponent() {
               Insufficient {sellToken.symbol} balance or invalid amount.
             </div>
           )}
+          </Card>
 
           {/* Swap Button */}
           <Button
-            className="w-full h-14 text-lg bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 mt-2 text-lg bg-primary font-bold text-foreground rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={swapTokens}
             disabled={!isValidSwap || !isConnected}
           >
             {isConnected ? 'Swap' : 'Connect Wallet'}
           </Button>
         </div>
-      </Card>
     </div>
   );
 }
