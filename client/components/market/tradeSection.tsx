@@ -65,9 +65,9 @@ export default function tradeSection({ initialTokens }: tradeSectionProps) {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-lg font-semibold">${token.price.toFixed(2)}</p>
+              <p className="text-lg font-semibold">${(token.price*token.balance).toFixed(2)}</p>
               <p className="text-sm text-muted-foreground">
-                Balance: {token.balance.toFixed(4)}
+                {token.balance.toFixed(4)} {token.symbol}
               </p>
             </div>
           </li>
