@@ -5,6 +5,8 @@ import MiniKitProvider from "@/components/minikit-provider";
 import dynamic from "next/dynamic";
 import NextAuthProvider from "@/components/next-auth-provider";
 import Navigation from '@/components/navigation'
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import ThemeProvider from "@/components/context/themeProvider";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // minified version is also included
@@ -31,13 +33,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NextAuthProvider>
-        <ErudaProvider>
-          <MiniKitProvider>
-            <body className={inter.className}>{children}</body>
-            <ToastContainer />
-            <Navigation />
-          </MiniKitProvider>
-        </ErudaProvider>
+        <NextThemesProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ThemeProvider>
+            <ErudaProvider>
+              <MiniKitProvider>
+                <body className={inter.className}>{children}</body>
+                <ToastContainer />
+                <Navigation />
+              </MiniKitProvider>
+            </ErudaProvider>
+          </ThemeProvider>
+        </NextThemesProvider>
       </NextAuthProvider>
     </html>
   );
