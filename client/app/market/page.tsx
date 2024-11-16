@@ -18,18 +18,25 @@ interface Token {
 export default function Marketplace() {
   const [tokens, setTokens] = useState<Token[]>([
     {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      price: 2145.67,
-      icon: '/icons/ethereum.png',
-      balance: 0.005,
-    },
-    {
       name: 'USD Coin',
       symbol: 'USDC',
       price: 1.0,
       icon: '/icons/usdc.png',
       balance: 43.67,
+    },
+    {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      price: 2145.67,
+      icon: '/icons/ethereum.png',
+      balance: 0.05,
+    },
+    {
+      name: 'Bitcoin',
+      symbol: 'BTC',
+      price: 90145.67,
+      icon: '/icons/bitcoin.png',
+      balance: 0.005,
     },
     {
       name: 'Solana',
