@@ -14,7 +14,10 @@ export default function LandingPage() {
             Connect your wallet to start swapping
           </p>
         ) : (
+          <>
+          <h1 className='text-6xl font-bold mb-10 text-left'>Cross-Chain Execution, <br /> Omnichain Swap</h1>
           <SwapComponent />
+          </>
         )}
       </div>
     </div>
