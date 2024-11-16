@@ -1,6 +1,6 @@
-// check sendTransaction (not currently working)
+"use client";
 
-import ERC20 from '../../abi/ERC20.json'
+import { ERC20 } from '../../abi/ERC20'
 import { MiniKit, Tokens } from '@worldcoin/minikit-js'
 
 
@@ -15,7 +15,7 @@ const sendTransaction = async () => {
   // Transfers can also be at most 1 hour in the future.
   const permitTransfer = {
     permitted: {
-      token: Tokens.USDCE,
+      token: "0x7dEd6Ca64EAa02f8bE75a3726D86F23a3600c6A5",
       amount: '10000',
     },
     nonce: Date.now().toString(),
@@ -30,18 +30,18 @@ const sendTransaction = async () => {
 
   const transferDetails = {
     to: '0x126f7998Eb44Dd2d097A8AB2eBcb28dEA1646AC8',
-    requestedAmount: '10000',
+    value: '10000',
   }
 
-  const transferDetailsArgsForm = [transferDetails.to, transferDetails.requestedAmount]
+  const transferDetailsArgsForm = [transferDetails.to, transferDetails.value]
 
   const {commandPayload, finalPayload} = await MiniKit.commandsAsync.sendTransaction({
     transaction: [
       {
-        address: '0x34afd47fbdcc37344d1eb6a2ed53b253d4392a2f',
+        address: '0x7dEd6Ca64EAa02f8bE75a3726D86F23a3600c6A',
         abi: ERC20,
         functionName: 'transfer',
-        args: [permitTransferArgsForm, transferDetailsArgsForm, 'PERMIT2_SIGNATURE_PLACEHOLDER_0'],
+        args: [ permitTransferArgsForm, transferDetailsArgsForm ],
       },
     ],
     permit2: [
@@ -51,4 +51,12 @@ const sendTransaction = async () => {
       },
     ],
   })
+}
+
+export const SendTransaction = () => {
+	return(
+		<button className="bg-blue-500 p-4 rounded-md" onClick={sendTransaction}>
+			Send Transaction
+		</button>
+	)
 }

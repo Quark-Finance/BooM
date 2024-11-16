@@ -1,4 +1,6 @@
-{
+import { Abi } from "viem";
+
+export const ERC20: Abi = [ {
     "inputs": [
         {
             "internalType": "address",
@@ -21,4 +23,4 @@
     ],
     "stateMutability": "nonpayable",
     "type": "function"
-}
+} ]
