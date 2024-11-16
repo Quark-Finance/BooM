@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "@worldcoin/minikit-js": "^1.0.0",
-		"@worldcoin/minikit-react": "^1.0.0",
+    "@worldcoin/minikit-react": "^1.0.0",
     "eruda": "^3.2.3",
     "next": "14.2.6",
     "next-auth": "^4.24.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "viem": "^2.21.45"
   },
   "devDependencies": {
     "@types/node": "^20",

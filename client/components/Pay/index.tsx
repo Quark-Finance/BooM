@@ -31,7 +31,7 @@ const sendPayment = async () => {
         token_amount: tokenToDecimals(0.1, Tokens.USDCE).toString(),
       },
     ],
-    description: "Watch this is a test",
+    description: "This is just a test",
   };
 
   if (MiniKit.isInstalled()) {
@@ -73,7 +73,7 @@ export const PayBlock = () => {
   }, []);
 
   return (
-    <button className="bg-blue-500 p-4" onClick={sendPayment}>
+    <button className="bg-blue-500 p-4 rounded-md" onClick={sendPayment}>
       Pay
     </button>
   );
