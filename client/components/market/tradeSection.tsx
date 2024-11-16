@@ -40,12 +40,12 @@ export default function tradeSection({ initialTokens }: tradeSectionProps) {
 
   return (
     <>
-      <h2 className="text-xl font-bold mb-2">Your Tokens</h2>
-      <ul className="space-y-4">
+      <h2 className="text-2xl font-bold p-4">Buy and Sell Tokens</h2>
+      <ul className="space-y-4 px-4">
         {tokens.map((token) => (
           <li
             key={token.symbol}
-            className="cursor-pointer hover:bg-secondary/10 transition-colors rounded-lg p-4 flex items-center justify-between"
+            className="cursor-pointer border border-gray-200 shadow-sm hover:bg-secondary/10 transition-colors rounded-lg p-4 flex items-center justify-between"
             onClick={() => {
               setSelectedToken(token);
               setIsDrawerOpen(true);

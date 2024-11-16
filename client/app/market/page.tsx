@@ -1,6 +1,5 @@
 // app/market/page.tsx
 
-import { Coins } from 'lucide-react';
 import TrendingCoins from '@/components/market/trendingCoins';
 import TradeSection from '@/components/market/tradeSection';
 
@@ -45,17 +44,12 @@ export default function Marketplace() {
   ];
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4 flex items-center text-primary">
-        <Coins className="mr-2" />
-        Marketplace
-      </h1>
+    <div className="max-w-md mx-auto">
+      {/* Trending Coins Section */}
+      <TrendingCoins />
 
       {/* Your Tokens Section */}
       <TradeSection initialTokens={initialTokens} />
-
-      {/* Trending Coins Section */}
-      <TrendingCoins />
     </div>
   );
 }
