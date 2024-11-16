@@ -45,7 +45,7 @@ export default function tradeSection({ initialTokens }: tradeSectionProps) {
         {tokens.map((token) => (
           <li
             key={token.symbol}
-            className="cursor-pointer border border-gray-200 shadow-sm hover:bg-secondary/10 transition-colors rounded-lg p-4 flex items-center justify-between"
+            className="cursor-pointer border border-gray-200 dark:border-gray-700 shadow-sm hover:bg-secondary/10 transition-colors rounded-lg p-4 flex items-center justify-between"
             onClick={() => {
               setSelectedToken(token);
               setIsDrawerOpen(true);
@@ -65,9 +65,9 @@ export default function tradeSection({ initialTokens }: tradeSectionProps) {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-lg font-semibold">${token.price.toFixed(2)}</p>
+              <p className="text-lg font-semibold">${(token.price*token.balance).toFixed(2)}</p>
               <p className="text-sm text-muted-foreground">
-                Balance: {token.balance.toFixed(4)}
+                {token.balance.toFixed(4)} {token.symbol}
               </p>
             </div>
           </li>

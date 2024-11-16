@@ -215,7 +215,7 @@ function TokenInput({ amount, onAmountChange, token, label, balance }: TokenInpu
   return (
     <div className="space-y-2">
       <div className="text-sm font-medium text-muted-foreground">{label}</div>
-      <div className="flex items-center space-x-4 bg-secondary/50 p-4 rounded-lg">
+      <div className="flex items-center space-x-4 bg-secondary/50 p-4 rounded-lg pr-10">
         <Input
           type="number"
           value={amount}
@@ -234,9 +234,12 @@ function TokenInput({ amount, onAmountChange, token, label, balance }: TokenInpu
           <span className="font-medium">{token.symbol}</span>
         </div>
       </div>
+      <div className="text-sm text-muted-foreground">
+          1 {token.symbol} = ${token.price}
+        </div>
       {balance !== undefined && (
         <div className="text-sm text-muted-foreground">
-          Balance: {balance.toFixed(6)} {token.symbol}
+          Balance: {balance.toFixed(2)} {token.symbol}
         </div>
       )}
     </div>
