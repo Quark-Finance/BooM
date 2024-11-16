@@ -26,6 +26,7 @@
     "react-toastify": "^10.0.6",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
+    "viem": "^2.21.45"
   },
   "devDependencies": {
     "@types/node": "^20",
