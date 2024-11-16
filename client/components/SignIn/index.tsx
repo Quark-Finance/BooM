@@ -14,7 +14,7 @@ export const SignIn = () => {
     return (
       <>
         Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
+        <button className='p-3 bg-green-500 rounded-md text-white font-bold' onClick={() => signIn()}>Sign in</button>
       </>
     );
   }
