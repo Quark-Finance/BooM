@@ -4,6 +4,11 @@ import "./globals.css";
 import MiniKitProvider from "@/components/minikit-provider";
 import dynamic from "next/dynamic";
 import NextAuthProvider from "@/components/next-auth-provider";
+import Navigation from '@/components/navigation'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// minified version is also included
+// import 'react-toastify/dist/ReactToastify.min.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +34,8 @@ export default function RootLayout({
         <ErudaProvider>
           <MiniKitProvider>
             <body className={inter.className}>{children}</body>
+            <ToastContainer />
+            <Navigation />
           </MiniKitProvider>
         </ErudaProvider>
       </NextAuthProvider>
