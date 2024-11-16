@@ -41,7 +41,12 @@ const tokens: Token[] = [
     decimals: 6,
     image: '/icons/usdc.png',
   },
-  // Add more tokens as needed
+  {
+    symbol: "PEPE",
+    address: "0x0",
+    decimals: 6,
+    image: '/icons/pepe.svg',
+  }
 ];
 export const publicClient = createPublicClient({
   chain: arbitrumSepolia,
@@ -106,11 +111,11 @@ export default function SwapComponent() {
   const [sellAmount, setSellAmount] = useState('');
   const [buyAmount, setBuyAmount] = useState('');
   const [sellToken, setSellToken] = useState(tokens[0]);
-  const [buyToken, setBuyToken] = useState<Token | null>(null);
+  const [buyToken, setBuyToken] = useState<Token>(tokens[1]);
   const [sellTokenBalance, setSellTokenBalance] = useState('0');
+  const [exchangeRate, setExchangeRate] = useState(0); 
   const [isValidSwap, setIsValidSwap] = useState(false);
 
-  // Fetch balance of the selected sell token
   const { data: balanceData } = useBalance({
     address,
     token: sellToken.address !== '0x0000000000000000000000000000000000000000' ? sellToken.address : undefined,
@@ -124,19 +129,40 @@ export default function SwapComponent() {
     }
   }, [balanceData]);
 
-  // Mock exchange rate for demonstration purposes
-  const exchangeRate = 2000; // Example: 1 ETH = 2000 USDC
+  // Fetch live exchange rates
+  useEffect(() => {
+    const fetchExchangeRate = async () => {
+      if (!sellToken || !buyToken) return;
+
+      try {
+        const response = await fetch(
+          `https://min-api.cryptocompare.com/data/price?fsym=${sellToken.symbol}&tsyms=${buyToken.symbol}`
+        );
+        const data = await response.json();
+
+        if (data[buyToken.symbol]) {
+          setExchangeRate(data[buyToken.symbol]);
+        }
+      } catch (error) {
+        console.error('Error fetching exchange rate:', error);
+        setExchangeRate(0);
+      }
+    };
+
+    fetchExchangeRate();
+  }, [sellToken, buyToken]);
 
   // Update buy amount based on sell amount and exchange rate
   useEffect(() => {
-    if (sellAmount && buyToken) {
-      const amount =
-        (parseFloat(sellAmount) * exchangeRate).toFixed(buyToken.decimals);
+    if (sellAmount && exchangeRate) {
+      const amount = (parseFloat(sellAmount) * exchangeRate).toFixed(
+        buyToken.decimals
+      );
       setBuyAmount(amount);
     } else {
       setBuyAmount('');
     }
-  }, [sellAmount, buyToken]);
+  }, [sellAmount, exchangeRate, buyToken.decimals]);
 
   // Validate the swap
   useEffect(() => {
@@ -150,7 +176,7 @@ export default function SwapComponent() {
     }
   }, [sellAmount, sellTokenBalance, sellToken.decimals, buyToken]);
 
-  // Swap tokens (sell and buy tokens)
+  // Swap tokens (swap sell and buy tokens)
   const handleTokenSwap = () => {
     setSellToken(buyToken || tokens[0]);
     setBuyToken(sellToken);

@@ -82,7 +82,7 @@ export const Header = React.memo(function Header({ actions }: HeaderProps) {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={openChainModal}
-                          className="bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm"
+                          className="bg-primary text-foreground font-semibold px-3 py-2 rounded-md text-sm"
                         >
                           {chain.name}
                         </button>
