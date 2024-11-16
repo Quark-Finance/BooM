@@ -54,8 +54,8 @@ export default function TrendingCoins() {
           <div
             key={coin.symbol}
             className={cn(
-              'min-w-[160px] bg-white rounded-lg p-4 flex-shrink-0',
-              'border border-gray-200 shadow-sm',
+              'min-w-[160px] rounded-lg p-4 flex-shrink-0',
+              'border border-gray-200 shadow-sm dark:border-gray-700',
               'cursor-pointer hover:bg-gray-50 transition-colors'
             )}
           >
