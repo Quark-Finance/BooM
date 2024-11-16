@@ -223,7 +223,7 @@ function TokenInput({ amount, onAmountChange, token, label, balance }: TokenInpu
       </div>
       {balance !== undefined && (
         <div className="text-sm text-muted-foreground">
-          Balance: {balance.toFixed(6)} {token.symbol}
+          Balance: {balance.toFixed(2)} {token.symbol}
         </div>
       )}
     </div>

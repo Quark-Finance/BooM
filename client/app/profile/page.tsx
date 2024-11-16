@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ThemeToggle } from "@/components/themeToggle/ThemeToggle";
 import { MiniKit } from "@worldcoin/minikit-js";
 import { SlidersHorizontal, Check } from "lucide-react";
 import UserAssets from "@/components/userAssets";
@@ -26,6 +25,7 @@ export default function Profile() {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [sortCriteria, setSortCriteria] = useState<string>("balance");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // New loading state
 
   const filterRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,6 +37,7 @@ export default function Profile() {
 
       if (!walletAddress) {
         console.error("Wallet address is missing or invalid");
+        setIsLoading(false);
         return;
       }
 
@@ -55,6 +56,8 @@ export default function Profile() {
         }
       } catch (error) {
         console.error("Error fetching user info:", error);
+      } finally {
+        setIsLoading(false); // Set loading to false once the data is fetched
       }
     };
 
@@ -95,12 +98,20 @@ export default function Profile() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isFilterOpen]);
 
+  // Loading state handler
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-2xl font-bold">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-4">
       {/* User Information Header */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">{userInfo?.username || "John Doe"}</h1>
-        <ThemeToggle />
       </div>
 
       {/* User Profile and Assets */}
