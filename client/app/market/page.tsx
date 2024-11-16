@@ -41,6 +41,13 @@ export default function Marketplace() {
       icon: '/icons/solana.png',
       balance: 0.5,
     },
+    {
+      name: 'Pepe',
+      symbol: 'PEPE',
+      price: 0.0001,
+      icon: '/icons/pepe.png',
+      balance: 58127.0,
+    }
   ];
 
   return (
