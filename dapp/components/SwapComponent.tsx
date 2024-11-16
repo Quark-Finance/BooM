@@ -3,23 +3,16 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { ArrowDownUp } from 'lucide-react';
 import Image from 'next/image';
-import { useAccount, useBalance } from 'wagmi';
-import { createPublicClient, createWalletClient, custom, formatUnits, http, parseEther, parseUnits } from 'viem';
-import { arbitrumSepolia } from 'viem/chains';
+import { useAccount, useBalance, usePublicClient, useWalletClient, } from 'wagmi';
+import { formatUnits, parseUnits } from 'viem';
+import { toast } from 'react-toastify';
 import { ArbitrumContract } from '@/lib/contractAddresses';
-
-const PRIVATE_KEY = process.env.PRIVATE_KEY! as `0x${string}`;
-const RPC_URL = process.env.RPC_URL;
+import { Swap } from '../contract/swapAbi';
+import { Watch } from '../contract/watchAbi';
 
 type Token = {
   symbol: string;
@@ -41,67 +34,19 @@ const tokens: Token[] = [
     decimals: 6,
     image: '/icons/usdc.png',
   },
+  {
+    symbol: 'PEPE',
+    address: '0x6982508145454ce325ddbe47a25d4ec3d2311933', // Mainnet pepe address
+    decimals: 18,
+    image: '/icons/pepe.png',
+  }
   // Add more tokens as needed
 ];
-export const publicClient = createPublicClient({
-  chain: arbitrumSepolia,
-  transport: http()
-})
-
-export const walletClient = createWalletClient({
-  chain: arbitrumSepolia,
-  transport: custom(window.ethereum!)
-})
-
-  
-async function swapTokens() {
-  // Initialize the wallet client using the RPC URL and private key
-  const [account] = await walletClient.getAddresses();
-
-  // Define the contract address and ABI
-  const contractAddress = '0x7b59080B27A659AEC847121De8eb402024F4bE48';
-  const Swap = [
-    {
-      inputs: [
-        { internalType: 'address', name: '_inputOFT', type: 'address' },
-        { internalType: 'address', name: '_outputOFT', type: 'address' },
-        { internalType: 'uint32', name: '_targetEid', type: 'uint32' },
-        { internalType: 'uint256', name: '_amount', type: 'uint256' },
-      ],
-      name: 'swapTokenOn',
-      outputs: [],
-      stateMutability: 'payable',
-      type: 'function',
-    },
-  ];
-
-  const inputOFT = '0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588';
-  const outputOFT = '0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC';
-  const targetEid = 40232;
-  const amount = parseEther('1'); 
-  const value = parseEther('0.005');
-
-  try {
-    // Call the swapTokenOn function
-    const txHash = await walletClient.writeContract({
-      address: ArbitrumContract, 
-      abi: Swap,
-      functionName: 'swapTokenOn',
-      args: [inputOFT, outputOFT, targetEid, amount],  
-      value,
-      account,
-  });
-
-    console.log(`Transaction sent! Hash: ${txHash}`);
-    return txHash;
-  } catch (error) {
-    console.error('Error during contract interaction:', error);
-    return
-  }
-}
 
 export default function SwapComponent() {
   const { address, isConnected } = useAccount();
+  const publicClient = usePublicClient();
+  const { data: walletClient } = useWalletClient();
 
   const [sellAmount, setSellAmount] = useState('');
   const [buyAmount, setBuyAmount] = useState('');
@@ -113,7 +58,10 @@ export default function SwapComponent() {
   // Fetch balance of the selected sell token
   const { data: balanceData } = useBalance({
     address,
-    token: sellToken.address !== '0x0000000000000000000000000000000000000000' ? sellToken.address : undefined,
+    token:
+      sellToken.address !== '0x0000000000000000000000000000000000000000'
+        ? sellToken.address
+        : undefined,
   });
 
   useEffect(() => {
@@ -130,8 +78,9 @@ export default function SwapComponent() {
   // Update buy amount based on sell amount and exchange rate
   useEffect(() => {
     if (sellAmount && buyToken) {
-      const amount =
-        (parseFloat(sellAmount) * exchangeRate).toFixed(buyToken.decimals);
+      const amount = (
+        parseFloat(sellAmount) * exchangeRate
+      ).toFixed(buyToken.decimals);
       setBuyAmount(amount);
     } else {
       setBuyAmount('');
@@ -140,10 +89,20 @@ export default function SwapComponent() {
 
   // Validate the swap
   useEffect(() => {
-    const sellAmountBigInt = parseUnits(sellAmount || '0', sellToken.decimals);
-    const balanceBigInt = parseUnits(sellTokenBalance || '0', sellToken.decimals);
+    const sellAmountBigInt = parseUnits(
+      sellAmount || '0',
+      sellToken.decimals
+    );
+    const balanceBigInt = parseUnits(
+      sellTokenBalance || '0',
+      sellToken.decimals
+    );
 
-    if (sellAmountBigInt <= balanceBigInt && sellAmountBigInt > 0 && buyToken) {
+    if (
+      sellAmountBigInt <= balanceBigInt &&
+      sellAmountBigInt > 0 &&
+      buyToken
+    ) {
       setIsValidSwap(true);
     } else {
       setIsValidSwap(false);
@@ -156,6 +115,78 @@ export default function SwapComponent() {
     setBuyToken(sellToken);
     setSellAmount(buyAmount);
   };
+
+  // Function to perform the swap
+  async function swapTokens() {
+    if (!address) {
+      toast.error('Please connect your wallet');
+      return;
+    }
+
+    if (!walletClient) {
+      toast.error('Wallet client not available');
+      return;
+    }
+
+    try {
+      
+      // Define the contract address and other variables
+      const inputOFT = '0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588';
+      const outputOFT = '0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC';
+      const targetEid = 40232;
+      const amount = parseUnits(sellAmount, sellToken.decimals);
+      const value = parseUnits('0.005', 18);
+      
+      // Call the swapTokenOn function
+      const hash = await walletClient.writeContract({
+        address: ArbitrumContract,
+        abi: Swap,
+        functionName: 'swapTokenOn',
+        args: [inputOFT, outputOFT, targetEid, amount],
+        value,
+        account: address,
+      });
+      
+      // Show a toast that the swap is initiating
+      toast.info('Swap initiated');
+
+      console.log(`Transaction sent! Hash: ${hash}`);
+      toast.info(`Transaction sent! Hash: ${hash}`);
+
+      // Optionally, wait for transaction receipt (test function)
+      const receipt = await publicClient?.waitForTransactionReceipt({ hash });
+      console.log('Transaction receipt:', receipt);
+
+      // If you wait for the receipt here, you can notify the user upon confirmation
+      toast.success('Swap transaction confirmed!');
+
+    } catch (error) {
+      console.error('Error during contract interaction:', error);
+      toast.error('Error during contract interaction');
+    }
+  }
+
+  // Use effect to watch for contract events
+  useEffect(() => {
+    if (!address || !publicClient) return;
+
+    // Start watching the contract event
+    const unwatch = publicClient.watchContractEvent({
+      address: '0xa56F2Eb760131C39f2ddF4c6D4d245E3d5a1d796', // ARB contract address
+      abi: Watch,
+      eventName: 'Transfer',
+      args: { to: address },
+      onLogs: (logs) => {
+        console.log('Swap completed!', logs);
+        toast.success('Swap completed!');
+      },
+    });
+
+    // Cleanup function to unwatch when component unmounts or address changes
+    return () => {
+      unwatch();
+    };
+  }, [address, publicClient]);
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-6">
@@ -181,7 +212,9 @@ export default function SwapComponent() {
               <Select
                 value={sellToken.symbol}
                 onValueChange={(value) => {
-                  const selectedToken = tokens.find((t) => t.symbol === value);
+                  const selectedToken = tokens.find(
+                    (t) => t.symbol === value
+                  );
                   if (selectedToken) setSellToken(selectedToken);
                 }}
               >
@@ -248,7 +281,9 @@ export default function SwapComponent() {
               <Select
                 value={buyToken?.symbol || ''}
                 onValueChange={(value) => {
-                  const selectedToken = tokens.find((t) => t.symbol === value);
+                  const selectedToken = tokens.find(
+                    (t) => t.symbol === value
+                  );
                   if (selectedToken) setBuyToken(selectedToken);
                 }}
               >
@@ -302,7 +337,7 @@ export default function SwapComponent() {
           {/* Swap Button */}
           <Button
             className="w-full h-14 text-lg bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={async () => await swapTokens()}
+            onClick={swapTokens}
             disabled={!isValidSwap || !isConnected}
           >
             {isConnected ? 'Swap' : 'Connect Wallet'}
