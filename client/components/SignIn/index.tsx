@@ -6,7 +6,6 @@ export const SignIn = () => {
   if (session) {
     return (
       <>
-        Signed in as {session?.user?.name?.slice(0, 10)} <br />
         <button onClick={() => signOut()}>Sign out</button>
       </>
     );
@@ -14,7 +13,7 @@ export const SignIn = () => {
     return (
       <>
         Not signed in <br />
-        <button className='p-3 bg-green-500 rounded-md text-white font-bold' onClick={() => signIn()}>Sign in</button>
+        <button className='p-3 bg-green-500 rounded-md text-white font-bold' onClick={() => signIn("worldcoin")}>Sign in</button>
       </>
     );
   }
