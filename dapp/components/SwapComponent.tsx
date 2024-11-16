@@ -14,7 +14,12 @@ import { Input } from '@/components/ui/input';
 import { ArrowDownUp } from 'lucide-react';
 import Image from 'next/image';
 import { useAccount, useBalance } from 'wagmi';
-import { formatUnits, parseUnits } from 'viem';
+import { createPublicClient, createWalletClient, custom, formatUnits, http, parseEther, parseUnits } from 'viem';
+import { arbitrumSepolia } from 'viem/chains';
+import { ArbitrumContract } from '@/lib/contractAddresses';
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY! as `0x${string}`;
+const RPC_URL = process.env.RPC_URL;
 
 type Token = {
   symbol: string;
@@ -38,6 +43,62 @@ const tokens: Token[] = [
   },
   // Add more tokens as needed
 ];
+export const publicClient = createPublicClient({
+  chain: arbitrumSepolia,
+  transport: http()
+})
+
+export const walletClient = createWalletClient({
+  chain: arbitrumSepolia,
+  transport: custom(window.ethereum!)
+})
+
+  
+async function swapTokens() {
+  // Initialize the wallet client using the RPC URL and private key
+  const [account] = await walletClient.getAddresses();
+
+  // Define the contract address and ABI
+  const contractAddress = '0x7b59080B27A659AEC847121De8eb402024F4bE48';
+  const Swap = [
+    {
+      inputs: [
+        { internalType: 'address', name: '_inputOFT', type: 'address' },
+        { internalType: 'address', name: '_outputOFT', type: 'address' },
+        { internalType: 'uint32', name: '_targetEid', type: 'uint32' },
+        { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      ],
+      name: 'swapTokenOn',
+      outputs: [],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+  ];
+
+  const inputOFT = '0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588';
+  const outputOFT = '0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC';
+  const targetEid = 40232;
+  const amount = parseEther('1'); 
+  const value = parseEther('0.005');
+
+  try {
+    // Call the swapTokenOn function
+    const txHash = await walletClient.writeContract({
+      address: ArbitrumContract, 
+      abi: Swap,
+      functionName: 'swapTokenOn',
+      args: [inputOFT, outputOFT, targetEid, amount],  
+      value,
+      account,
+  });
+
+    console.log(`Transaction sent! Hash: ${txHash}`);
+    return txHash;
+  } catch (error) {
+    console.error('Error during contract interaction:', error);
+    return
+  }
+}
 
 export default function SwapComponent() {
   const { address, isConnected } = useAccount();
@@ -241,6 +302,7 @@ export default function SwapComponent() {
           {/* Swap Button */}
           <Button
             className="w-full h-14 text-lg bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={async () => await swapTokens()}
             disabled={!isValidSwap || !isConnected}
           >
             {isConnected ? 'Swap' : 'Connect Wallet'}
