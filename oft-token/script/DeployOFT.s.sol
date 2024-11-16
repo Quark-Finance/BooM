@@ -22,12 +22,13 @@ contract DeployOFT is Script {
         address owner = 0x000ef5F21dC574226A06C76AAE7060642A30eB74;
 
 
-        string memory name = "PEPE";
+        string memory name = "ASDFAS";
 
         address ArbEndpoint = 0x6EDCE65403992e310A62460808c4b910D972f10f;
         //address BaseEndpoint = 0x6EDCE65403992e310A62460808c4b910D972f10f;
+        address WorldEndpoint = 0xBa8dF7424dAE9C2CDB4BC1aD2b63ABD97194fDb6;
 
-        address lzEndpoint = ArbEndpoint;
+        address lzEndpoint = WorldEndpoint;
 
         oft = new BoomOFT(name, name, lzEndpoint, owner);
 

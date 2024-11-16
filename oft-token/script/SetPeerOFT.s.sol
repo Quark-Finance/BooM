@@ -26,6 +26,7 @@ contract DeployOFT is Script {
 
         uint32 OPEid = 40232;
         uint32 ArbEid = 40231;
+        uint32 WorldEid = 40337;
 
         oft = BoomOFT(oftOP);
 
