@@ -82,15 +82,15 @@ export const Header = React.memo(function Header({ actions }: HeaderProps) {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={openChainModal}
-                          className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm"
+                          className="bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm"
                         >
                           {chain.name}
                         </button>
                         <button
                           onClick={openAccountModal}
-                          className="bg-muted px-3 py-1 rounded-md text-sm"
+                          className="bg-muted px-3 py-2 rounded-md text-sm"
                         >
-                          {`${account.displayName.substring(0, 6)}...${account.displayName.slice(-4)}`}
+                          {account.displayName}
                         </button>
                       </div>
                     ) : (
