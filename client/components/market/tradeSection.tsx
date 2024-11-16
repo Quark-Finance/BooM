@@ -45,7 +45,7 @@ export default function tradeSection({ initialTokens }: tradeSectionProps) {
         {tokens.map((token) => (
           <li
             key={token.symbol}
-            className="cursor-pointer border border-gray-200 shadow-sm hover:bg-secondary/10 transition-colors rounded-lg p-4 flex items-center justify-between"
+            className="cursor-pointer border border-gray-200 dark:border-gray-700 shadow-sm hover:bg-secondary/10 transition-colors rounded-lg p-4 flex items-center justify-between"
             onClick={() => {
               setSelectedToken(token);
               setIsDrawerOpen(true);
