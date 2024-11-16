@@ -22,7 +22,7 @@ contract DeployOFT is Script {
         address owner = 0x000ef5F21dC574226A06C76AAE7060642A30eB74;
 
 
-        string memory name = "USDC";
+        string memory name = "PEPE";
 
         address ArbEndpoint = 0x6EDCE65403992e310A62460808c4b910D972f10f;
         //address BaseEndpoint = 0x6EDCE65403992e310A62460808c4b910D972f10f;

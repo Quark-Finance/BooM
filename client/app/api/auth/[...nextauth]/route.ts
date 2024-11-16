@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
   },
-  debug: process.env.NODE_ENV === "development",
+  debug: true,
 };
 
 const handler = NextAuth(authOptions);
