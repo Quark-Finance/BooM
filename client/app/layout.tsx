@@ -44,7 +44,7 @@ export default function RootLayout({
             <ErudaProvider>
               <MiniKitProvider>
                 <Header />
-                <body className={`${inter.className} mt-16`}>{children}</body>
+                <body className={`${inter.className} pb-20 mt-16`}>{children}</body>
                 <ToastContainer />
                 <Navigation />
               </MiniKitProvider>
