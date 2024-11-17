@@ -16,13 +16,13 @@ As our Proof of Concept, we created the OmniSwapHub and OmniSwapSpoke contracts,
 We have deployed 2 OFTs in two chains in order to make communications:
 
 - USDC
-  -  Arbitrum Sepolia: 0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588
-  -  OPtimism Sepolia: 0x15906379703940bc51a5881Ad1a5fc481Ebc8bB1
-  -  Unichain Sepolia: 0x64e8C6db52bC99c39d7c2DEB0F9CD52848a5772b
+  -  Arbitrum Sepolia: [0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588](https://sepolia-explorer.arbitrum.io/address/0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588)
+  -  OPtimism Sepolia: [0x15906379703940bc51a5881Ad1a5fc481Ebc8bB1](https://optimism-sepolia.blockscout.com/address/0x15906379703940bc51a5881Ad1a5fc481Ebc8bB1)
+  -  Unichain Sepolia: [0x64e8C6db52bC99c39d7c2DEB0F9CD52848a5772b](https://unichain-sepolia.blockscout.com/address/0x64e8C6db52bC99c39d7c2DEB0F9CD52848a5772b)
 - PEPE
-  -  Arbitrum Sepolia: 0xa56F2Eb760131C39f2ddF4c6D4d245E3d5a1d796
-  -  OPtimism Sepolia: 0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC
-  -  Unichain Sepolia: 0xa14C098C96201B303c6FC4F7aA78F4e422e05D54
+  -  Arbitrum Sepolia: [0xa56F2Eb760131C39f2ddF4c6D4d245E3d5a1d796](https://sepolia-explorer.arbitrum.io/address/0xa56F2Eb760131C39f2ddF4c6D4d245E3d5a1d796)
+  -  OPtimism Sepolia: [0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC](https://optimism-sepolia.blockscout.com/address/0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC)
+  -  Unichain Sepolia: [0xa14C098C96201B303c6FC4F7aA78F4e422e05D54](https://unichain-sepolia.blockscout.com/address/0xa14C098C96201B303c6FC4F7aA78F4e422e05D54)
 
 We also have deployed the OmniSwap contracts at Arbitrum (0x7b59080B27A659AEC847121De8eb402024F4bE48) and OPtimism (0x9586FA0a7B039531411ceAD42616c7751Ceec296).
 
@@ -35,17 +35,22 @@ This way, the user simply did a swap, allowing them to access PEPE where they ar
 In order to perform swaps we deployed Uniswap V4 on OP Sepolia (where the liquidity is):
 
 Uniswap V4 Deployed OP:
-  Deployed PoolManager at 0x536527976E98E253B424a3655E695D144E343341
-  Deployed PoolSwapTest at 0x69801C169647Ad125707Dd40096D4EDC20Bb521a
-  Deployed PoolModifyLiquidityTest at 0x440D0bEe5706987be528Fec5C4cA5947E38161d2
-  Deployed PoolDonateTest at 0xE7f9b827214D1fC817a5005Ca678e9AaABEfEE58
-  Deployed PoolTakeTest at 0xaBF8C1c67324C75C82B2cD2a274BF55Ab9A33355
-  Deployed PoolClaimsTest at 0xCe8d00d2001aaaA1D46216ffF73Bd814f5030246
+  Deployed PoolManager at [0x536527976E98E253B424a3655E695D144E343341](https://optimism-sepolia.blockscout.com/address/0x536527976E98E253B424a3655E695D144E343341)
+  
+  Deployed PoolSwapTest at [0x69801C169647Ad125707Dd40096D4EDC20Bb521a](https://optimism-sepolia.blockscout.com/address/0x69801C169647Ad125707Dd40096D4EDC20Bb521a)
+  
+  Deployed PoolModifyLiquidityTest at [0x440D0bEe5706987be528Fec5C4cA5947E38161d2](https://optimism-sepolia.blockscout.com/address/0x440D0bEe5706987be528Fec5C4cA5947E38161d2)
+  
+  Deployed PoolDonateTest at [0xE7f9b827214D1fC817a5005Ca678e9AaABEfEE58](https://optimism-sepolia.blockscout.com/address/0xE7f9b827214D1fC817a5005Ca678e9AaABEfEE58)
+  
+  Deployed PoolTakeTest at [0xaBF8C1c67324C75C82B2cD2a274BF55Ab9A33355](https://optimism-sepolia.blockscout.com/address/0xaBF8C1c67324C75C82B2cD2a274BF55Ab9A33355)
+  
+  Deployed PoolClaimsTest at [0xCe8d00d2001aaaA1D46216ffF73Bd814f5030246](https://optimism-sepolia.blockscout.com/address/0xCe8d00d2001aaaA1D46216ffF73Bd814f5030246)
 
-Hook: 0xBbd735DB53cE42a7423B0861864dAD6253588040
+  Hook: [0xBbd735DB53cE42a7423B0861864dAD6253588040](https://optimism-sepolia.blockscout.com/address/0xBbd735DB53cE42a7423B0861864dAD6253588040)
 
-You can see a USDC to PEPE swap at: https://sepolia-optimism.etherscan.io/tx/0x4cbf456d29708bb0710bd1c8dc52bc8e8b497b8d62386ce8ec8ef9c5cec8fb31
-
+You can see a USDC to PEPE swap at: [0x4cbf456d29708bb0710bd1c8dc52bc8e8b497b8d62386ce8ec8ef9c5cec8fb31
+](https://optimism-sepolia.blockscout.com/tx/0x4cbf456d29708bb0710bd1c8dc52bc8e8b497b8d62386ce8ec8ef9c5cec8fb31)
 
 
 
