@@ -16,6 +16,7 @@ export default function ThemeProvider({
     try {
       return (localStorage.getItem("themeColor") as ThemeColors) || "Zinc";
     } catch (error) {
+      console.error("Error getting theme color from localStorage:", error);
       "Zinc" as ThemeColors;
     }
   };
