@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowDownUp } from 'lucide-react';
 import Image from 'next/image';
 import { useAccount, useBalance, usePublicClient, useWalletClient, } from 'wagmi';
-import { formatUnits, parseUnits } from 'viem';
+import { parseUnits } from 'viem';
 import { toast } from 'react-toastify';
 import { ArbitrumContract } from '@/lib/contractAddresses';
 import { Swap } from '../contract/swapAbi';
