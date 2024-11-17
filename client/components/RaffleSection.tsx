@@ -1,7 +1,7 @@
 // components/RaffleSection.tsx
 'use client';
 
-import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface RaffleProps {
   totalBoom: number;
@@ -9,20 +9,19 @@ interface RaffleProps {
 }
 
 export default function RaffleSection({ totalBoom, setTotalBoom }: RaffleProps) {
-  const [message, setMessage] = useState('');
 
   const handleBuyWithBoom = () => {
     if (totalBoom >= 100) {
       setTotalBoom((prevBoom) => prevBoom - 100);
-      setMessage('You have successfully purchased a raffle ticket with 100 BOOM!');
+      toast.success("Raffle Ticket Purchased");
     } else {
-      setMessage('Insufficient BOOM points to purchase a raffle ticket.');
+      toast.error("Insufficient BOOM Points");
     }
   };
 
   const handleBuyWithUSDC = () => {
     // Implement USDC purchase logic here
-    setMessage('You have successfully purchased a raffle ticket with 5 USDC!');
+    toast.info("USDC Purchase Coming Soon");
   };
 
   return (
@@ -43,7 +42,6 @@ export default function RaffleSection({ totalBoom, setTotalBoom }: RaffleProps) 
           Buy with 5 USDC
         </button>
       </div>
-      {message && <p className="mt-4 text-sm text-green-500">{message}</p>}
     </div>
   );
 }
