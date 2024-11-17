@@ -52,6 +52,8 @@ Uniswap V4 Deployed OP:
 You can see a USDC to PEPE swap at: [0x4cbf456d29708bb0710bd1c8dc52bc8e8b497b8d62386ce8ec8ef9c5cec8fb31
 ](https://optimism-sepolia.blockscout.com/tx/0x4cbf456d29708bb0710bd1c8dc52bc8e8b497b8d62386ce8ec8ef9c5cec8fb31)
 
+Lastly, we used Arbitrum Stylus to create wasm contracts in the EVM that can be called from anywhere: [0x04bec230cfc059df272a3a57ad45060d65c139308a3d6bd5d3822fda55adaae6](https://optimism-sepolia.blockscout.com/address/0x04bec230cfc059df272a3a57ad45060d65c139308a3d6bd5d3822fda55adaae6)
+
 
 
 
