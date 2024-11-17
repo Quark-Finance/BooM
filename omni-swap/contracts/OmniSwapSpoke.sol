@@ -15,7 +15,7 @@ import {IHooks} from "v4-core/src/interfaces/IHooks.sol";
 import {PoolKey} from "v4-core/src/types/PoolKey.sol";
 import {Currency} from "v4-core/src/types/Currency.sol";
 import {TickMath} from "v4-core/src/libraries/TickMath.sol";
-
+import {BalanceDelta} from "v4-core/src/types/BalanceDelta.sol";
 contract OmniSwapSpoke is IOAppComposer, Ownable {
 
     using OptionsBuilder for bytes;
@@ -87,14 +87,14 @@ contract OmniSwapSpoke is IOAppComposer, Ownable {
             hooks: hook
         });
 
-        // swapRouter.swap(key, IPoolManager.SwapParams({
-        //     zeroForOne: true,
-        //     amountSpecified: int256(amountIn),
-        //     sqrtPriceLimitX96: MIN_PRICE_LIMIT 
-        // }), PoolSwapTest.TestSettings({takeClaims: false, settleUsingBurn: false}), new bytes(0));
+        BalanceDelta delta = swapRouter.swap(key, IPoolManager.SwapParams({
+            zeroForOne: token0 > token1,
+            amountSpecified: int256(amountIn),
+            sqrtPriceLimitX96: MIN_PRICE_LIMIT 
+        }), PoolSwapTest.TestSettings({takeClaims: false, settleUsingBurn: false}), new bytes(0));
 
 
-        uint256 amountOut = amountIn/2;
+        uint256 amountOut = token0 > token1 ? uint256(uint128(delta.amount0())) : uint256(uint128(delta.amount1()));
 
 
 
