@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { useThemeContext } from "@/components/context/themeProvider";
 import { useTheme } from "next-themes";
 import { availableThemeColors } from "@/lib/themeColors";
