@@ -72,6 +72,8 @@
   },
   "packageManager": "pnpm@9.13.2+sha512.88c9c3864450350e65a33587ab801acf946d7c814ed1134da4a924f6df5a2120fd36b46aab68f7cd1d413149112d53c7db3a4136624cfd00ff1846a0c6cef48a",
   "dependencies": {
-    "@layerzerolabs/oft-evm": "^2.0.0"
+    "@layerzerolabs/oft-evm": "^2.0.0",
+    "solc": "0.8.24",
+    "v4-core": "github:Uniswap/v4-core"
   }
 }

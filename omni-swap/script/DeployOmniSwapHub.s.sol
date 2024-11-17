@@ -27,23 +27,23 @@ contract SendSwap is Script {
 
         address owner = 0x000ef5F21dC574226A06C76AAE7060642A30eB74;
 
-        address omniSwapSpokeOP = 0x9586FA0a7B039531411ceAD42616c7751Ceec296;
+        address omniSwapSpokeOP = 0xe8fA696FC058826f001c9B35627b548D94F85BbA;
         uint32  OPEid = 40232;
+        uint32 ArbEid = 40231;
 
         omniSwapHub = new OmniSwapHub(owner);
 
-        omniSwapHub.setSwapper(OPEid, omniSwapSpokeOP);
+        omniSwapHub.setSwapper(ArbEid, omniSwapSpokeOP);
 
-        address oftInArb = 0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588; // USDC 
-        address oftOutOP = 0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC;
+        address oftInArb = 0xa56F2Eb760131C39f2ddF4c6D4d245E3d5a1d796; // USDC 
+        address oftInUni = 0x64e8C6db52bC99c39d7c2DEB0F9CD52848a5772b;
+        address oftOutOP = 0x15906379703940bc51a5881Ad1a5fc481Ebc8bB1; // USDC
 
-        uint256 amount = 0.001 ether;
+        uint256 amount = 0.0001 ether;
 
-        OFT(oftInArb).approve(address(omniSwapHub), amount);
+        OFT(oftOutOP).approve(address(omniSwapHub), amount);
 
-        console.log("token: ", OFT(oftInArb).token());
-
-        omniSwapHub.swapTokenOn{value: 0.01 ether}(oftInArb, oftOutOP, OPEid, amount);
+        omniSwapHub.swapTokenOn{value: 0.02 ether}(oftOutOP, oftInArb, ArbEid, amount);
 
         console.log("---- OmniSwapHub deployed ----");
         console.log("ChainId: ", block.chainid);

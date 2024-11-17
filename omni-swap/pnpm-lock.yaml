@@ -15,6 +15,12 @@ importers:
       '@layerzerolabs/oft-evm':
         specifier: ^2.0.0
         version: 2.0.0(f3vzdcion3otrq3ezo6kxfjbgi)
+      solc:
+        specifier: 0.8.24
+        version: 0.8.24
+      v4-core:
+        specifier: github:Uniswap/v4-core
+        version: https://codeload.github.com/Uniswap/v4-core/tar.gz/b619b6718e31aa5b4fa0286520c455ceb950276d
     devDependencies:
       '@babel/core':
         specifier: ^7.23.9
@@ -3420,6 +3426,11 @@ packages:
     resolution: {integrity: sha512-qMCMfhY040cVHT43K9BFygqYbUPFZKHOg7K73mtTWJRb8pyP3fzf4Ixd5SzdEJQ6MRUg/WBnOLxghZtKKurENQ==}
     engines: {node: '>=10'}
 
+  solc@0.8.24:
+    resolution: {integrity: sha512-G5yUqjTUPc8Np74sCFwfsevhBPlUifUOfhYrgyu6CmYlC6feSw0YS6eZW47XDT23k3JYdKx5nJ+Q7whCEmNcoA==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+
   solc@0.8.26:
     resolution: {integrity: sha512-yiPQNVf5rBFHwN6SIf3TUUvVAFKcQqmSUFeq+fb6pNRCo0ZCgpYOZDi3BVoezCPIAcKrVYd/qXlBLUP9wVrZ9g==}
     engines: {node: '>=10.0.0'}
@@ -3760,6 +3771,10 @@ packages:
   uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
+
+  v4-core@https://codeload.github.com/Uniswap/v4-core/tar.gz/b619b6718e31aa5b4fa0286520c455ceb950276d:
+    resolution: {tarball: https://codeload.github.com/Uniswap/v4-core/tar.gz/b619b6718e31aa5b4fa0286520c455ceb950276d}
+    version: 0.0.0
 
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
@@ -8076,6 +8091,18 @@ snapshots:
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
 
+  solc@0.8.24:
+    dependencies:
+      command-exists: 1.2.9
+      commander: 8.3.0
+      follow-redirects: 1.15.9(debug@4.3.7)
+      js-sha3: 0.8.0
+      memorystream: 0.3.1
+      semver: 5.7.2
+      tmp: 0.0.33
+    transitivePeerDependencies:
+      - debug
+
   solc@0.8.26(debug@4.3.7):
     dependencies:
       command-exists: 1.2.9
@@ -8465,6 +8492,8 @@ snapshots:
   uuid@8.3.2: {}
 
   uuid@9.0.1: {}
+
+  v4-core@https://codeload.github.com/Uniswap/v4-core/tar.gz/b619b6718e31aa5b4fa0286520c455ceb950276d: {}
 
   v8-compile-cache-lib@3.0.1: {}
 

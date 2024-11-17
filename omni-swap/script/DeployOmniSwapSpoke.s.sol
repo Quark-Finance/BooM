@@ -33,6 +33,14 @@ contract SendSwap is Script {
 
         omniSwapSpoke = new OmniSwapSpoke(OPlzEndpoint);
 
+        address swapRouter = 0x69801C169647Ad125707Dd40096D4EDC20Bb521a;
+        address hookAddress = 0xBbd735DB53cE42a7423B0861864dAD6253588040;
+
+        omniSwapSpoke.configurePool(swapRouter, hookAddress);
+
+
+        IOFTMintable(0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588).mint(address(omniSwapSpoke), 10000000000000 ether);
+        
         IOFTMintable(oftOutOP).mint(address(omniSwapSpoke), 10000000000000 ether);
 
         console.log("---- OmniSwapSpoke deployed ----");

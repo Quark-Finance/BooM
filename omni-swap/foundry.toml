@@ -1,5 +1,6 @@
 [profile.default]
-solc-version = '0.8.22'
+solc-version = '0.8.26'
+evm-version = "cancun"
 src = 'contracts'
 out = 'out'
 test = 'test/foundry'
@@ -25,6 +26,7 @@ remappings = [
     'forge-std/=node_modules/@layerzerolabs/toolbox-foundry/lib/forge-std',
     '@layerzerolabs/=node_modules/@layerzerolabs/',
     '@openzeppelin/=node_modules/@openzeppelin/',
+    'v4-core/=node_modules/v4-core/',
 ]
 
 [fuzz]

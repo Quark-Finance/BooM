@@ -29,9 +29,11 @@ contract OmniSwapHub is Ownable {
     function swapTokenOn(address _inputOFT, address _outputOFT, uint32 _targetEid, uint256 _amount) public payable{
         // IMPORTANT: inputOFT is a token address on hub chain, outputOFT is a token address on target chain\
 
+        require(OFT(_inputOFT).balanceOf(msg.sender) >= _amount, "Insufficient Balance of Input Token");
+
         OFT(_inputOFT).transferFrom(msg.sender, address(this), _amount);
 
-        bytes memory options = OptionsBuilder.newOptions().addExecutorLzReceiveOption(200000, 0).addExecutorLzComposeOption(0, 500000, 0.001 ether);
+        bytes memory options = OptionsBuilder.newOptions().addExecutorLzReceiveOption(200000, 0).addExecutorLzComposeOption(0, 600000, 0.01 ether);
 
         bytes memory composeMsg = abi.encode(msg.sender, _outputOFT);
 

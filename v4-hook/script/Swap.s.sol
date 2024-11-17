@@ -26,7 +26,7 @@ import "forge-std/console.sol";
 
 contract HookMiningScript is Script {
 
-//       Deployed PoolManager at 0x74Bb711D032B5Df4F63dc04EA4422807D768aC08
+//    Deployed PoolManager at 0x74Bb711D032B5Df4F63dc04EA4422807D768aC08
 //   Deployed PoolSwapTest at 0x9d8F28B52504112A8C89df9095ca3BF346286787
 //   Deployed PoolModifyLiquidityTest at 0x5F1933923909C6a65a6769fA0d6F157857e33c48
 //   Deployed PoolDonateTest at 0x3546914261a14D476671B02498420aDBbE7cA69A
@@ -56,16 +56,18 @@ contract HookMiningScript is Script {
 
         tokenA.approve(address(swapRouter), type(uint256).max);
         tokenB.approve(address(swapRouter), type(uint256).max);
-        tokenA.approve(address(modifyLiquidityRouter), type(uint256).max);
-        tokenB.approve(address(modifyLiquidityRouter), type(uint256).max);
+        // tokenA.approve(address(modifyLiquidityRouter), type(uint256).max);
+        // tokenB.approve(address(modifyLiquidityRouter), type(uint256).max);
 
         // address tokenA = 0x15906379703940bc51a5881Ad1a5fc481Ebc8bB1; //USDC
         // address tokenB = 0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC; //PEPE
 
+        address owner = 0x000ef5F21dC574226A06C76AAE7060642A30eB74;
+
         address hookAddress = 0xBbd735DB53cE42a7423B0861864dAD6253588040;
 
-        tokenA.approve(hookAddress, type(uint256).max);
-        tokenB.approve(hookAddress, type(uint256).max);
+        // tokenA.approve(hookAddress, type(uint256).max);
+        // tokenB.approve(hookAddress, type(uint256).max);
 
         key = PoolKey({
             currency0: Currency.wrap(address(tokenA)),
@@ -86,13 +88,29 @@ contract HookMiningScript is Script {
             new bytes(0)
         );
 
-        
-
         swapRouter.swap(key, IPoolManager.SwapParams({
             zeroForOne: true,
             amountSpecified: -1e17,
             sqrtPriceLimitX96: MIN_PRICE_LIMIT 
-        }), PoolSwapTest.TestSettings({takeClaims: false, settleUsingBurn: false}), new bytes(0));
+        }), PoolSwapTest.TestSettings({takeClaims: false, settleUsingBurn: false}), abi.encode(owner));
+
+        
+
+        // IPoolManager(0x536527976E98E253B424a3655E695D144E343341).swap(
+        //     PoolKey({
+        //         currency0: Currency.wrap(address(0x15906379703940bc51a5881Ad1a5fc481Ebc8bB1)),
+        //         currency1: Currency.wrap(address(0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC)),
+        //         fee: 3000,
+        //         tickSpacing: 120,
+        //         hooks: IHooks(0xBbd735DB53cE42a7423B0861864dAD6253588040)
+        //     }),
+        //     IPoolManager.SwapParams({
+        //         zeroForOne: true,
+        //         amountSpecified: int256(5e17),
+        //         sqrtPriceLimitX96: MIN_PRICE_LIMIT 
+        //     }),
+        //     abi.encode(owner)
+        // );
 
 
 

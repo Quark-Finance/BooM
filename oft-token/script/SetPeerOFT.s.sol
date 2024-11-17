@@ -21,16 +21,17 @@ contract DeployOFT is Script {
 
         address owner = 0x000ef5F21dC574226A06C76AAE7060642A30eB74;
 
-        address oftArb = 0xa56F2Eb760131C39f2ddF4c6D4d245E3d5a1d796;
-        address oftOP = 0xbA397eFEF3914aB025F7f5706fADE61f240A9EbC;
+        address oftArb = 0x6fD36fd6D6f1D8a5E43B33b1881fd4EF167b6588;
+        address oftOP = 0x15906379703940bc51a5881Ad1a5fc481Ebc8bB1;
+        address oftUni =  0x64e8C6db52bC99c39d7c2DEB0F9CD52848a5772b;
 
         uint32 OPEid = 40232;
         uint32 ArbEid = 40231;
-        uint32 WorldEid = 40337;
+        uint32 UniEid = 40333;
 
-        oft = BoomOFT(oftOP);
+        oft = BoomOFT(oftArb);
 
-        oft.setPeer(ArbEid, bytes32(uint256(uint160(oftArb))));
+        oft.setPeer(OPEid, bytes32(uint256(uint160(oftOP))));
         
         vm.stopBroadcast();
         
