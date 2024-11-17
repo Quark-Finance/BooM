@@ -56,15 +56,15 @@ export default function TrendingCoins() {
             className={cn(
               'min-w-[160px] rounded-lg p-4 flex-shrink-0',
               'border border-gray-200 shadow-sm dark:border-gray-700',
-              'cursor-pointer hover:bg-gray-50 transition-colors'
+              'cursor-pointer hover:bg-gray-700 transition-colors'
             )}
           >
             <div className="flex items-center space-x-2">
               <Image
                 src={coin.icon}
                 alt={coin.name}
-                width={24}
-                height={24}
+                width={42}
+                height={42}
                 className="rounded-full"
               />
               <div>
@@ -86,7 +86,7 @@ function SkeletonCoinCard() {
       <div className="flex items-center space-x-2">
         <Skeleton className="w-6 h-6 rounded-full" />
         <div className="flex-1">
-          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-4 w-42" />
           <Skeleton className="h-4 w-16 mt-1" />
         </div>
       </div>

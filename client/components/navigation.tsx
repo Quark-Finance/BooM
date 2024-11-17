@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Store, History, User } from 'lucide-react'
+import { Store, History, User, DollarSign } from 'lucide-react'
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -18,10 +18,14 @@ export default function Navigation() {
           <User size={24} />
           <span className="text-xs">Profile</span>
         </Link>
-        <Link href="/history" className={`flex flex-col items-center ${pathname === '/history' ? 'text-primary' : 'text-muted-foreground'}`}>
+        <Link href="/rewards" className={`flex flex-col items-center ${pathname === '/rewards' ? 'text-primary' : 'text-muted-foreground'}`}>
+          <DollarSign size={24} />
+          <span className="text-xs">Rewards</span>
+        </Link>
+        {/* <Link href="/history" className={`flex flex-col items-center ${pathname === '/history' ? 'text-primary' : 'text-muted-foreground'}`}>
           <History size={24} />
           <span className="text-xs">History</span>
-        </Link>
+        </Link> */}
       </div>
     </nav>
   )
